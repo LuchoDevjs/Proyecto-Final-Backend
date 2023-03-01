@@ -1,0 +1,17 @@
+{"level":"warn","message":{"error":"Ruta: /api/message/5656/5656 - Metodo: GET - Ruta inexistente. -Status Code 404"},"timestamp":"2023-02-27 17:21:42"}
+{"level":"warn","message":{"error":"Ruta: /api/register - Metodo: POST - Ruta inexistente. -Status Code 404"},"timestamp":"2023-02-27 17:47:55"}
+{"level":"warn","message":{"error":"Ruta: /api/orders - Metodo: POST - Ruta inexistente. -Status Code 404"},"timestamp":"2023-02-27 19:40:46"}
+{"level":"error","message":"[getById] ContenedorMongoDb, Cast to ObjectId failed for value \"34545\" (type string) at path \"_id\" for model \"Producto\"","timestamp":"2023-02-27 21:10:16"}
+{"level":"error","message":"[getById] ContenedorMongoDb, Cast to ObjectId failed for value \"34545\" (type string) at path \"_id\" for model \"Producto\"","timestamp":"2023-02-27 21:11:09"}
+{"level":"error","message":"[getById] ContenedorMongoDb, Cast to ObjectId failed for value \"34545\" (type string) at path \"_id\" for model \"Producto\"","timestamp":"2023-02-27 21:13:57"}
+{"level":"error","message":"[getById] ContenedorMongoDb, Cast to ObjectId failed for value \"34545\" (type string) at path \"_id\" for model \"Producto\"","timestamp":"2023-02-27 21:16:12"}
+{"level":"error","message":"[getById] ContenedorMongoDb, Cast to ObjectId failed for value \"34545\" (type string) at path \"_id\" for model \"Producto\"","timestamp":"2023-02-27 21:16:29"}
+{"level":"error","message":"[getById] ContenedorMongoDb, Cast to ObjectId failed for value \"34545\" (type string) at path \"_id\" for model \"Producto\"","timestamp":"2023-02-27 21:16:44"}
+{"level":"error","message":"[getById] ContenedorMongoDb, Cast to ObjectId failed for value \"34545\" (type string) at path \"_id\" for model \"Producto\"","timestamp":"2023-02-27 21:17:20"}
+{"level":"error","message":"[getById] ContenedorMongoDb, Cast to ObjectId failed for value \"34545\" (type string) at path \"_id\" for model \"Producto\"","timestamp":"2023-02-27 21:17:37"}
+{"level":"error","message":"[getById] ContenedorMongoDb, Cast to ObjectId failed for value \"34545\" (type string) at path \"_id\" for model \"Producto\"","timestamp":"2023-02-27 21:18:11"}
+{"level":"error","message":"[getById] ContenedorMongoDb, Cast to ObjectId failed for value \"34545\" (type string) at path \"_id\" for model \"Producto\"","timestamp":"2023-02-27 21:18:55"}
+{"level":"error","message":"[getById] ContenedorMongoDb, Cast to ObjectId failed for value \"34545\" (type string) at path \"_id\" for model \"Producto\"","timestamp":"2023-02-27 21:20:49"}
+{"level":"error","message":"[getById] ContenedorMongoDb, Cast to ObjectId failed for value \"34545\" (type string) at path \"_id\" for model \"Producto\"","timestamp":"2023-02-27 21:21:19"}
+{"level":"error","message":"[postItem] ContenedorMongoDb, Producto validation failed: stock: Path `stock` is required.","timestamp":"2023-02-28 06:41:59"}
+{"level":"error","message":"[getById] ContenedorMongoDb, Cast to ObjectId failed for value \"34545\" (type string) at path \"_id\" for model \"Producto\"","timestamp":"2023-02-28 06:45:48"}
