@@ -1,13 +1,23 @@
-import mongoose, { Schema } from 'mongoose';
-const message = new Schema({
-      email: {
-            type: String,
-            require: true,
-            validate: /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/,
-      },
-      type: { type: String, required: true },
-      message: { type: String, required: true },
-      date: { type: String, required: true },
+import mongoose from "mongoose";
+
+const messageSchema = new mongoose.Schema({
+  email: {
+    type: String,
+    required: true,
+    validate: /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/, // Validación de formato de correo electrónico
+  },
+  type: {
+    type: String,
+    required: true,
+  },
+  message: {
+    type: String,
+    required: true,
+  },
+  date: {
+    type: String,
+    required: true,
+  },
 });
 
-export default mongoose.model('Message', message);
+export default mongoose.model("Message", messageSchema);
