@@ -1,19 +1,21 @@
-import { verifyJWT } from '../utils/jwt.js';
-export default async (req, res, next) => {
-      const {
-            headers: { authorization },
-      } = req;
+import { verifyJWT } from "../utils/jwt.js";
 
-      if (!authorization) {
-            return res
-                  .status(401)
-                  .json({ message: 'Unauthorized to zone private.' });
-      }
-      const accessToken = authorization.split(' ')[1];
-      try {
-            req.user = await verifyJWT(accessToken);
-            next();
-      } catch (error) {
-            return res.status(401).json(error.message);
-      }
-};
+export default async function authorize(req, res, next) {
+  const authorizationHeader = req.headers.authorization;
+
+  if (!authorizationHeader) {
+    return res
+      .status(401)
+      .json({ message: "Unauthorized to access private zone." });
+  }
+
+  const accessToken = authorizationHeader.split(" ")[1];
+
+  try {
+    const user = await verifyJWT(accessToken);
+    req.user = user;
+    next();
+  } catch (error) {
+    return res.status(401).json(error.message);
+  }
+}
