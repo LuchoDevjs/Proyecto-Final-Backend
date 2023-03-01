@@ -1,37 +1,39 @@
-import OrderDto from './../dto/Order.dto.js';
-import Orders from './../Order.model.js';
-import OrderDaosFactory from './../dao/orderDaoFactory.js';
+import OrderDto from "./../dto/Order.dto.js";
+import Orders from "./../Order.model.js";
+import OrderDaosFactory from "./../dao/orderDaoFactory.js";
 
-export default class OrderRepository {
-      constructor() {
-            this.dao = OrderDaosFactory.getOrdertDao();
-      }
-      async create(order) {
-            try {
-                  const orderDto = await this.dao.create(new OrderDto(order));
-                  return new Orders(orderDto);
-            } catch (error) {
-                  throw new Error(error.message);
-            }
-      }
+export default class OrdersRepository {
+  constructor() {
+    this.dao = OrderDaosFactory.getOrderDao();
+  }
 
-      async getAll(query) {
-            try {
-                  const ordersDto = await this.dao.getAll(query);
-                  return ordersDto.map((orderDto) => new Orders(orderDto));
-            } catch (error) {
-                  throw new Error(error.message);
-            }
-      }
-      async getByParameter(value, parameter) {
-            try {
-                  const ordersDto = await this.dao.getByParameter(
-                        value,
-                        parameter
-                  );
-                  return ordersDto.map((orderDto) => new Orders(orderDto));
-            } catch (error) {
-                  throw new Error(error.message);
-            }
-      }
+  // Crea una nueva orden en la base de datos.
+  async create(newOrder) {
+    try {
+      const orderDto = await this.dao.create(new OrderDto(newOrder));
+      return new Orders(orderDto);
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+
+  // Obtiene todas las órdenes de la base de datos.
+  async getAll(query) {
+    try {
+      const ordersDtos = await this.dao.getAll(query);
+      return ordersDtos.map((orderDto) => new Orders(orderDto));
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+
+  // Obtiene las órdenes de la base de datos que coinciden con un parámetro específico.
+  async getByParameter(value, parameter) {
+    try {
+      const ordersDtos = await this.dao.getByParameter(value, parameter);
+      return ordersDtos.map((orderDto) => new Orders(orderDto));
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
 }
