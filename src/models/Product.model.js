@@ -1,4 +1,4 @@
-export default class Producto {
+export default class Product {
   // Variables privadas que se pueden acceder mediante getters y setters
   #id;
   #codigo;

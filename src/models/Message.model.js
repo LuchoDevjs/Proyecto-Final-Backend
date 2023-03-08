@@ -1,4 +1,4 @@
-export default class Mensajes {
+export default class Message {
   #id;
   #tipo;
   #email;

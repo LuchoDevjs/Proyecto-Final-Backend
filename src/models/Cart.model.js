@@ -1,4 +1,4 @@
-export default class CarritoDeCompras {
+export default class CartsModel {
   #id;
   #productos;
   #usuario;

@@ -12,3 +12,7 @@
 {"level":"error","message":"[getById] ContenedorMongoDb, Cast to ObjectId failed for value \"34545\" (type string) at path \"_id\" for model \"Producto\"","timestamp":"2023-02-27 21:21:19"}
 {"level":"error","message":"[postItem] ContenedorMongoDb, Producto validation failed: stock: Path `stock` is required.","timestamp":"2023-02-28 06:41:59"}
 {"level":"error","message":"[getById] ContenedorMongoDb, Cast to ObjectId failed for value \"34545\" (type string) at path \"_id\" for model \"Producto\"","timestamp":"2023-02-28 06:45:48"}
+{"level":"error","message":"[getById] ContenedorMongoDb, Cast to ObjectId failed for value \"454\" (type string) at path \"_id\" for model \"User\"","timestamp":"2023-03-05 13:05:02"}
+{"level":"error","message":"[getById] ContenedorMongoDb, Cast to ObjectId failed for value \"454\" (type string) at path \"_id\" for model \"User\"","timestamp":"2023-03-05 13:06:13"}
+{"level":"error","message":"[getById] ContenedorMongoDb, Cast to ObjectId failed for value \"454\" (type string) at path \"_id\" for model \"User\"","timestamp":"2023-03-05 13:08:03"}
+{"level":"error","message":"[getById] ContenedorMongoDb, Cast to ObjectId failed for value \"454\" (type string) at path \"_id\" for model \"User\"","timestamp":"2023-03-05 13:08:06"}

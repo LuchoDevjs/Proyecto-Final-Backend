@@ -1,56 +1,53 @@
-import { Server } from 'socket.io';
-import messageService from './service/message.service.js';
-import logger from './utils/Loggers.js';
+import { Server } from "socket.io";
+import messageService from "./service/message.service.js";
+import logger from "./utils/Loggers.js";
 
-/* se define la varible io*/
+/* Declaramos la variable io */
 let io;
 
-/* funcion para iniciar el socket.io*/
-function initSocket(httpServer) {
-      io = new Server(httpServer);
-      setEvents(io);
+/* Función para inicializar el socket.io */
+function initializeSocketIO(httpServer) {
+  /* Creamos una nueva instancia del servidor socket.io */
+  io = new Server(httpServer);
+  /* Configuramos los eventos del socket.io */
+  configureSocketIOEvents(io);
 }
-/* funcion para los eventos de  el socket.io*/
-async function setEvents(io) {
-      /* conencion del cliente*/
-      io.on('connect', async (socketClient) => {
-            /*  lee los mensajes de la Base de datos*/
 
-            const mensajes = await messageService.getAllMessages();
-
-            io.emit('history-message', mensajes);
-
-            logger.info(`Se conecto el cliente con el id ${socketClient.id}`);
-            /* se recibe nuevo mensaje*/
-            socketClient.on('new-message', async (data) => {
-                  /* se guarda el mensaje*/
-
-                  await messageService.createMessage(data);
-
-                  /* y se emite al cliente*/
-
-                  io.emit('history-message', mensajes);
-                  io.emit('notification-message', data);
-            });
-
-            /* se recibe el mail del cliente que escribe*/
-            socketClient.on('new-isWriting', (data) => {
-                  /* se emite el mail del cliente que escribe*/
-                  io.emit('IsWriting', data);
-            });
-
-            /* se avisa si se desconecto el cliente*/
-            socketClient.on('disconnect', () => {
-                  logger.info(
-                        `Se desconecto el cliente con el id
-                        ${socketClient.id}`
-                  );
-            });
-      });
+/* Función para configurar los eventos del socket.io */
+async function configureSocketIOEvents(io) {
+  /* Configuramos el evento de conexión del cliente */
+  io.on("connect", async (socketClient) => {
+    /* Obtenemos todos los mensajes de la base de datos */
+    const messages = await messageService.getAllMessages();
+    /* Enviamos el historial de mensajes al cliente recién conectado */
+    io.emit("history-message", messages);
+    /* Registramos en el log la conexión del cliente */
+    logger.info(`Cliente conectado con el ID: ${socketClient.id}`);
+    /* Configuramos el evento para recibir un nuevo mensaje del cliente */
+    socketClient.on("new-message", async (messageData) => {
+      /* Guardamos el nuevo mensaje en la base de datos */
+      await messageService.createMessage(messageData);
+      /* Enviamos el historial de mensajes actualizado a todos los clientes */
+      io.emit("history-message", messages);
+      /* Enviamos una notificación del nuevo mensaje a todos los clientes */
+      io.emit("notification-message", messageData);
+    });
+    /* Configuramos el evento para recibir el correo electrónico del cliente que está escribiendo un mensaje */
+    socketClient.on("new-isWriting", (email) => {
+      /* Enviamos el correo electrónico del cliente que está escribiendo a todos los clientes */
+      io.emit("IsWriting", email);
+    });
+    /* Configuramos el evento para detectar cuando el cliente se desconecta */
+    socketClient.on("disconnect", () => {
+      /* Registramos en el log la desconexión del cliente */
+      logger.info(`Cliente desconectado con el ID: ${socketClient.id}`);
+    });
+  });
 }
-/*funcion para emitir*/
+
+/* Función para enviar un evento y datos a todos los clientes */
 function emit(event, data) {
-      io.emit(event, data);
+  io.emit(event, data);
 }
 
-export { initSocket, emit };
+export { initializeSocketIO, emit };

@@ -1,6 +1,6 @@
 import env from "../../config/config.js";
 
-import MessagesDaosMongoDb from "./messages/MessagesDaosMongoDb.js";
+import MessageDaosMongoDb from "./messages/MessagesDaosMongoDb.js";
 
 class MessageDaosFactory {
   static getMessageDao() {
@@ -8,7 +8,7 @@ class MessageDaosFactory {
       case "file":
         return console.log("File not found");
       case "mongo":
-        return MessagesDaosMongoDb.getInstance();
+        return MessageDaosMongoDb.getInstance();
     }
   }
 }

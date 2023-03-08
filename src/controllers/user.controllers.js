@@ -1,4 +1,3 @@
-// Importar los servicios necesarios
 import cartsService from "../service/carts.service.js";
 import UsersService from "../service/user.service.js";
 import enviarMail from "../utils/EmailSender.js";
@@ -13,7 +12,7 @@ class UsersController {
     return res.status(200).json(users);
   }
 
-  // Obtener un usuario por su ID
+  // Obtener un usuario por id
   async getUserById(req, res) {
     try {
       const { id } = req.params;
@@ -24,63 +23,59 @@ class UsersController {
     }
   }
 
-  // Crear un usuario
+  // Crear un nuevo usuario
   async createUser(req, res) {
     try {
       const { body } = req;
-      const encryptedPassword = encrypt(body.password);
-      const userType = "user";
-      const newUser = await UsersService.createUser({
-        ...body,
-        password: encryptedPassword,
-        type: userType,
-      });
+      body.password = encrypt(body.password);
+      body.type = "user";
+      const user = await UsersService.createUser(body);
       const cartData = {
-        user: newUser.id,
-        email: newUser.email,
-        direccion: newUser.direccion,
+        user: user.id,
+        email: user.email,
+        address: user.address,
       };
       await cartsService.createCart(cartData);
       enviarMail(
         "Nuevo registro",
         `<div>
-                                       <h1>Datos Nuevo Registro</h1>
-                            <ul>
-                            <li>Email:${req.body.email}</li>
-                            <li>Nombre:${req.body.nombre}</li>
-                            <li>Direccion:${req.body.direccion}</li>
-                            </ul> 
-                                        </div>`
+           <h1>Datos Nuevo Registro</h1>
+           <ul>
+             <li>Email:${req.body.email}</li>
+             <li>Nombre:${req.body.nombre}</li>
+             <li>Direccion:${req.body.direccion}</li>
+           </ul> 
+         </div>`
       );
-      return res.status(201).json(newUser);
+      return res.status(201).json(user);
     } catch (error) {
       res.status(500).json(error.message);
     }
   }
 
-  // Eliminar un usuario por su ID
+  // Eliminar un usuario por id
   async deleteUser(req, res) {
     try {
       const { id } = req.params;
       await UsersService.deleteUser(id);
-      const remainingUsers = await UsersService.getAllUsers();
-      return res.status(200).json(remainingUsers);
+      const users = await UsersService.getAllUsers();
+      return res.status(200).json(users);
     } catch (error) {
       res.status(500).json(error.message);
     }
   }
 
-  // Actualizar un usuario
+  // Actualizar un usuario por id
   async updateUser(req, res) {
     try {
+      const { id } = req.params;
       const { body } = req;
-      await UsersService.updateUser(body.id, body);
-      const updatedUsers = await UsersService.getAllUsers();
-      return res.status(200).json(updatedUsers);
+      await UsersService.updateUser(id, body);
+      const users = await UsersService.getAllUsers();
+      return res.status(200).json(users);
     } catch (error) {
       res.status(500).json(error.message);
     }
   }
 }
-
 export default new UsersController();

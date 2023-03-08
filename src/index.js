@@ -1,53 +1,60 @@
-import { Server } from "socket.io";
-import messageService from "./service/message.service.js";
+import express from "express";
+import cors from "cors";
+import { fileURLToPath } from "url";
+import path from "path";
+import env from "./config/config.js";
 import logger from "./utils/Loggers.js";
+import apiRouters from "./routers/api/index.js";
+import { connectToDatabase } from "./config/bd.js";
+import { initSocket } from "./socket.js";
 
-/* Declaramos la variable io */
-let io;
+// Crear una nueva instancia de la aplicación Express
+const app = express();
 
-/* Función para inicializar el socket.io */
-function initializeSocketIO(httpServer) {
-  /* Creamos una nueva instancia del servidor socket.io */
-  io = new Server(httpServer);
-  /* Configuramos los eventos del socket.io */
-  configureSocketIOEvents(io);
-}
+// Conectar con la base de datos
+connectToDatabase();
 
-/* Función para configurar los eventos del socket.io */
-async function configureSocketIOEvents(io) {
-  /* Configuramos el evento de conexión del cliente */
-  io.on("connect", async (socketClient) => {
-    /* Obtenemos todos los mensajes de la base de datos */
-    const messages = await messageService.getAllMessages();
-    /* Enviamos el historial de mensajes al cliente recién conectado */
-    io.emit("history-message", messages);
-    /* Registramos en el log la conexión del cliente */
-    logger.info(`Cliente conectado con el ID: ${socketClient.id}`);
-    /* Configuramos el evento para recibir un nuevo mensaje del cliente */
-    socketClient.on("new-message", async (messageData) => {
-      /* Guardamos el nuevo mensaje en la base de datos */
-      await messageService.createMessage(messageData);
-      /* Enviamos el historial de mensajes actualizado a todos los clientes */
-      io.emit("history-message", messages);
-      /* Enviamos una notificación del nuevo mensaje a todos los clientes */
-      io.emit("notification-message", messageData);
-    });
-    /* Configuramos el evento para recibir el correo electrónico del cliente que está escribiendo un mensaje */
-    socketClient.on("new-isWriting", (email) => {
-      /* Enviamos el correo electrónico del cliente que está escribiendo a todos los clientes */
-      io.emit("IsWriting", email);
-    });
-    /* Configuramos el evento para detectar cuando el cliente se desconecta */
-    socketClient.on("disconnect", () => {
-      /* Registramos en el log la desconexión del cliente */
-      logger.info(`Cliente desconectado con el ID: ${socketClient.id}`);
-    });
-  });
-}
+// Definir el directorio raíz de la aplicación
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-/* Función para enviar un evento y datos a todos los clientes */
-function emit(event, data) {
-  io.emit(event, data);
-}
+// Configurar la aplicación
+app.use(cors()); // Permitir solicitudes CORS
+app.use("/", express.static(path.join(__dirname, "public/"))); // Definir el directorio de archivos estáticos
+app.use(express.json()); // Configurar el middleware para el análisis de solicitudes con formato JSON
+app.use(express.urlencoded({ extended: true })); // Configurar el middleware para el análisis de solicitudes con formato URL encoded
+app.use((req, res, next) => {
+  // Registrar todas las solicitudes que se reciben en la aplicación
+  logger.info(`${req.method} ${req.url}`);
+  next();
+});
 
-export { initializeSocketIO, emit };
+// Rutas de la API
+app.use("/api", apiRouters);
+
+// Manejador de rutas no definidas
+app.use("*", (req, res) => {
+  const data = {
+    error: `Ruta: ${req.originalUrl} - Metodo: ${req.method} - Ruta inexistente. -Status Code 404`,
+  };
+  logger.warn(data);
+
+  res.status(404).json(data);
+});
+
+// Iniciar el servidor
+const server = app.listen(env.PORT, () => {
+  logger.info(
+    `Servidor http esta escuchando en el puerto ${server.address().port}`
+  );
+  logger.info(`http://localhost:${server.address().port}`);
+  logger.info(`Environment: ${env.NODE_ENV}`);
+});
+
+// Iniciar el servidor de WebSocket
+initSocket(server);
+
+// Manejador de errores del servidor
+server.on("error", (error) => {
+  logger.error(`Error en servidor ${error}`);
+});

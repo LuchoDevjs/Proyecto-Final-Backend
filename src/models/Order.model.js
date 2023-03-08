@@ -1,4 +1,4 @@
-export default class Ordenes {
+export default class Orders {
   #id;
   #productos;
   #email;

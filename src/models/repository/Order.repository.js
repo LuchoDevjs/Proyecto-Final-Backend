@@ -2,7 +2,7 @@ import OrderDto from "./../dto/Order.dto.js";
 import Orders from "./../Order.model.js";
 import OrderDaosFactory from "./../dao/orderDaoFactory.js";
 
-export default class OrdersRepository {
+export default class OrderRepository {
   constructor() {
     this.dao = OrderDaosFactory.getOrderDao();
   }
