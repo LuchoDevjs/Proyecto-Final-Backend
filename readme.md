@@ -1,4 +1,4 @@
-# Proyecto Final Backend NodeJS de CoderHouse
+# Proyecto Final
 
 ## Autenticación de Usuarios
 
@@ -8,7 +8,7 @@
 
 ## API-Rest
 
-### Framework Principal ==> Express
+### Framework Principal > Express
 
 ### Variable de entorno a Configurar
 
