@@ -1,4 +1,4 @@
-export default class ProductDto {
+export default class ProductoDto {
   constructor(producto) {
     this.id = producto.id;
     this.codigo = producto.codigo;

@@ -8,18 +8,22 @@ class UsersController {
 
   // Obtener todos los usuarios
   async getAllUsers(req, res) {
-    const users = await UsersService.getAllUsers();
-    return res.status(200).json(users);
+    const data = await UsersService.getAllUsers();
+    return res.status(200).json(data);
   }
 
-  // Obtener un usuario por id
+  // Obtener un usuario por ID
   async getUserById(req, res) {
     try {
       const { id } = req.params;
-      const user = await UsersService.getUserById(id);
-      return res.status(200).json(user);
+      const data = await UsersService.getUserById(id);
+      return res.status(200).json(data);
     } catch (error) {
-      res.status(500).json(error.message);
+      res
+        .status(404)
+        .json(
+          `No se encontró el usuario con el ID especificado: ${error.message}`
+        );
     }
   }
 
@@ -27,55 +31,60 @@ class UsersController {
   async createUser(req, res) {
     try {
       const { body } = req;
-      body.password = encrypt(body.password);
-      body.type = "user";
-      const user = await UsersService.createUser(body);
-      const cartData = {
-        user: user.id,
-        email: user.email,
-        address: user.address,
+      body.password = encrypt(body.password); // Encriptar la contraseña antes de almacenarla en la base de datos
+      body.type = "user"; // Establecer el tipo de usuario como 'user'
+      const data = await UsersService.createUser(body); // Crear el usuario en la base de datos
+      const bodyCart = {
+        user: data.id, // ID del usuario recién creado
+        email: data.email,
+        direccion: data.direccion,
       };
-      await cartsService.createCart(cartData);
+      await cartsService.createCart(bodyCart); // Crear un carrito de compras para el nuevo usuario
       enviarMail(
         "Nuevo registro",
         `<div>
-           <h1>Datos Nuevo Registro</h1>
-           <ul>
-             <li>Email:${req.body.email}</li>
-             <li>Nombre:${req.body.nombre}</li>
-             <li>Direccion:${req.body.direccion}</li>
-           </ul> 
-         </div>`
-      );
-      return res.status(201).json(user);
+          <h1>Datos Nuevo Registro</h1>
+          <ul>
+            <li>Email:${req.body.email}</li>
+            <li>Nombre:${req.body.nombre}</li>
+            <li>Direccion:${req.body.direccion}</li>
+          </ul> 
+        </div>`
+      ); // Enviar un correo electrónico de confirmación al usuario
+      return res.status(201).json(data);
     } catch (error) {
       res.status(500).json(error.message);
     }
   }
 
-  // Eliminar un usuario por id
+  // Eliminar un usuario por ID
   async deleteUser(req, res) {
     try {
       const { id } = req.params;
       await UsersService.deleteUser(id);
-      const users = await UsersService.getAllUsers();
-      return res.status(200).json(users);
+      const data = await UsersService.getAllUsers();
+      return res.status(200).json(data);
     } catch (error) {
       res.status(500).json(error.message);
     }
   }
 
-  // Actualizar un usuario por id
+  // Actualizar un usuario por ID
   async updateUser(req, res) {
     try {
       const { id } = req.params;
       const { body } = req;
       await UsersService.updateUser(id, body);
-      const users = await UsersService.getAllUsers();
-      return res.status(200).json(users);
+      const data = await UsersService.getAllUsers();
+      return res.status(200).json(data);
     } catch (error) {
-      res.status(500).json(error.message);
+      res
+        .status(404)
+        .json(
+          `No se encontró el usuario con el ID especificado: ${error.message}`
+        );
     }
   }
 }
+
 export default new UsersController();

@@ -1,7 +1,7 @@
 // Importar las clases necesarias
 import ProductRepository from "./../models/repository/Product.repository.js";
 import Product from "./../models/Product.model.js";
-import ProductDto from "./../models/dto/Product.dto.js";
+import ProductoDto from "./../models/dto/Product.dto.js";
 
 // Crear una instancia del repositorio
 const productRepository = new ProductRepository();
@@ -13,7 +13,7 @@ class ProductService {
   async getAllProducts(query) {
     try {
       const products = await productRepository.getAll(query);
-      return products.map((product) => new ProductDto(product));
+      return products.map((product) => new ProductoDto(product));
     } catch (error) {
       throw new Error(error);
     }
@@ -23,7 +23,7 @@ class ProductService {
   async createProduct(data) {
     try {
       const product = await productRepository.create(new Product(data));
-      return new ProductDto(product);
+      return new ProductoDto(product);
     } catch (error) {
       throw new Error(error);
     }
@@ -43,7 +43,7 @@ class ProductService {
   async getProductById(id) {
     try {
       const product = await productRepository.getById(id);
-      return new ProductDto(product);
+      return new ProductoDto(product);
     } catch (error) {
       throw new Error(error);
     }
@@ -56,7 +56,7 @@ class ProductService {
         category,
         "category"
       );
-      return products.map((product) => new ProductDto(product));
+      return products.map((product) => new ProductoDto(product));
     } catch (error) {
       throw new Error(error);
     }

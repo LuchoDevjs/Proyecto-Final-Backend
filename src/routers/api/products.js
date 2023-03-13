@@ -3,22 +3,18 @@ import ProductController from "../../controllers/products.controller.js";
 import auth from "../../middlewares/auth.js";
 import { upload } from "../../middlewares/multer.js";
 
+// Creamos un objeto router para manejar las rutas
 const router = Router();
+
+// Añadimos el middleware de autenticación a todas las rutas de este archivo
 router.use(auth);
 
-// Obtener todos los productos
+// Definimos las rutas y los controladores asociados
 router.get("/", ProductController.getAllProducts);
-
-// Obtener un producto por ID
 router.get("/:id", ProductController.getProductById);
-
-// Crear un nuevo producto
-router.post("/", upload.single("filename"), ProductController.createProduct);
-
-// Actualizar un producto
-router.put("/", upload.single("filename"), ProductController.updateProduct);
-
-// Eliminar un producto por ID
+router.post("/", upload.single("image"), ProductController.createProduct);
+router.put("/:id", upload.single("image"), ProductController.updateProduct);
 router.delete("/:id", ProductController.deleteProduct);
 
+// Exportamos el objeto router para ser utilizado en la aplicación
 export default router;

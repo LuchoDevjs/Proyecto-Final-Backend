@@ -6,13 +6,13 @@ export default class CartsModel {
   #email;
   #fechaCreacion;
 
-  constructor(carrito) {
-    this.id = carrito.id;
-    this.productos = carrito.productos;
-    this.usuario = carrito.usuario;
-    this.email = carrito.email;
-    this.direccionEnvio = carrito.direccionEnvio;
-    this.fechaCreacion = carrito.fechaCreacion;
+  constructor(CartDto) {
+    this.id = CartDto.id;
+    this.productos = CartDto.productos;
+    this.usuario = CartDto.usuario;
+    this.email = CartDto.email;
+    this.direccionEnvio = CartDto.direccionEnvio;
+    this.fechaCreacion = CartDto.fechaCreacion;
   }
 
   // Getter y setter para id

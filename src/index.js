@@ -6,7 +6,7 @@ import env from "./config/config.js";
 import logger from "./utils/Loggers.js";
 import apiRouters from "./routers/api/index.js";
 import { connectToDatabase } from "./config/bd.js";
-import { initSocket } from "./socket.js";
+import { initializeSocketIO } from "./socket.js";
 
 // Crear una nueva instancia de la aplicación Express
 const app = express();
@@ -52,7 +52,7 @@ const server = app.listen(env.PORT, () => {
 });
 
 // Iniciar el servidor de WebSocket
-initSocket(server);
+initializeSocketIO(server);
 
 // Manejador de errores del servidor
 server.on("error", (error) => {

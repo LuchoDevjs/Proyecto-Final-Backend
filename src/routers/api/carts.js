@@ -1,23 +1,21 @@
 import { Router } from "express";
 import cartsControllers from "../../controllers/carts.controllers.js";
-import authMiddleware from "../../middlewares/auth.js";
+import auth from "../../middlewares/auth.js";
 
 const router = Router();
-
 // Usa el middleware de autenticación en todas las rutas
-router.use(authMiddleware);
-
+router.use(auth);
 // Rutas para los carritos de compras
 router.get("/", cartsControllers.getAllCarts);
-router.get("/:cartId/products", cartsControllers.getProductsInCart);
-router.get("/:userId/", cartsControllers.getCartByUserId);
-router.post("/:cartId/products", cartsControllers.addProductToCart);
+router.get("/:id/products", cartsControllers.cartProduct);
+router.get("/:idUser/", cartsControllers.getCartByIdUser);
+router.post("/:id/products", cartsControllers.newProduct);
 router.post("/", cartsControllers.createCart);
-router.put("/:cartId", cartsControllers.updateCart);
+router.put("/:userId", cartsControllers.updateCart);
 router.delete(
-  "/:cartId/product/:productId",
-  cartsControllers.removeProductFromCart
+  "/:idCart/product/:idProduct",
+  cartsControllers.deleteProductCart
 );
-router.delete("/:cartId", cartsControllers.deleteCart);
+router.delete("/:id", cartsControllers.deleteCart);
 
 export default router;

@@ -1,5 +1,5 @@
 import ProductDaosFactory from "./../dao/productDaoFactory.js";
-import ProductDto from "./../dto/Product.dto.js";
+import ProductoDto from "./../dto/Product.dto.js";
 import Product from "./../Product.model.js";
 
 export default class ProductRepository {
@@ -11,11 +11,11 @@ export default class ProductRepository {
   async create(productData) {
     try {
       // Crea un objeto ProductDto a partir de los datos del producto y lo inserta en la base de datos
-      const productDto = await this.productDao.create(
-        new ProductDto(productData)
+      const productoDto = await this.productDao.create(
+        new ProductoDto(productData)
       );
       // Crea un objeto Product a partir del objeto ProductDto creado
-      return new Product(productDto);
+      return new Product(productoDto);
     } catch (error) {
       // Lanza un error si no se puede crear el producto
       throw new Error(error);
@@ -27,7 +27,7 @@ export default class ProductRepository {
       // Obtiene todos los productos de la base de datos según el query especificado
       const productsDto = await this.productDao.getAll(query);
       // Convierte cada objeto ProductDto en un objeto Product y los devuelve en un array
-      return productsDto.map((productDto) => new Product(productDto));
+      return productsDto.map((productoDto) => new Product(productoDto));
     } catch (error) {
       // Lanza un error si no se pueden obtener los productos
       throw new Error(error);
@@ -37,9 +37,9 @@ export default class ProductRepository {
   async getById(id) {
     try {
       // Obtiene un producto de la base de datos según su ID
-      const productDto = await this.productDao.getById(id);
+      const productoDto = await this.productDao.getById(id);
       // Crea un objeto Product a partir del objeto ProductDto obtenido
-      return new Product(productDto);
+      return new Product(productoDto);
     } catch (error) {
       // Lanza un error si no se puede obtener el producto
       throw new Error(error);
@@ -54,7 +54,7 @@ export default class ProductRepository {
         parameter
       );
       // Convierte cada objeto ProductDto en un objeto Product y los devuelve en un array
-      return productsDto.map((productDto) => new Product(productDto));
+      return productsDto.map((productoDto) => new Product(productoDto));
     } catch (error) {
       // Lanza un error si no se pueden obtener los productos
       throw new Error(error);

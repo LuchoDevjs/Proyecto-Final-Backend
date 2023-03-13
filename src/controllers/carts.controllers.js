@@ -1,6 +1,6 @@
 // Importar los servicios de carritos y productos
 import cartService from "../service/carts.service.js";
-import productService from "../service/products.service.js";
+import productsService from "../service/products.service.js";
 
 class CartController {
   constructor() {}
@@ -63,8 +63,8 @@ class CartController {
   async updateCart(req, res) {
     try {
       const { body } = req; // Obtiene el cuerpo de la solicitud HTTP
-      await cartsService.updateCart(body.cartId, body); // Actualiza el carrito con el ID especificado
-      const updatedCarts = await cartsService.getAllCarts(); // Obtiene todos los carritos actualizados
+      await cartService.updateCart(body.cartId, body); // Actualiza el carrito con el ID especificado
+      const updatedCarts = await cartService.getAllCarts(); // Obtiene todos los carritos actualizados
       return res.status(200).json(updatedCarts); // Envía la respuesta HTTP con los carritos actualizados en formato JSON
     } catch (error) {
       res.status(500).json(error.message); // Maneja errores de servidor
@@ -79,7 +79,7 @@ class CartController {
         id: body.productId,
         cantidad: body.quantity,
       }; // Crea un objeto nuevo producto con la información del cuerpo de la solicitud HTTP
-      const cart = await cartsService.getCartById(cartId); // Obtiene el carrito con el ID especificado
+      const cart = await cartService.getCartById(cartId); // Obtiene el carrito con el ID especificado
 
       if (cart.productos.some((product) => product.id === newProduct.id)) {
         // Comprueba si el producto ya existe en el carrito
@@ -102,7 +102,7 @@ class CartController {
         cart.productos = [...cart.productos, newProduct]; // Agrega el nuevo producto al carrito si no existe
       }
 
-      await cartsService.updateCart(cartId, cart); // Actualiza el carrito con los productos nuevos o actualizados
+      await cartService.updateCart(cartId, cart); // Actualiza el carrito con los productos nuevos o actualizados
       return res.status(200).json(cartId); // Envía una respuesta HTTP con el ID del carrito actualizado
     } catch (error) {
       res.status(500).json(error.message); // Maneja errores de servidor
@@ -112,7 +112,7 @@ class CartController {
   async getProductosInCart(req, res) {
     try {
       const { id } = req.params;
-      const cartData = await cartsService.getCartById(id); // Obtener datos del carrito por ID
+      const cartData = await cartService.getCartById(id); // Obtener datos del carrito por ID
       const productos = [];
       for (const item of cartData.productos) {
         // Recorrer cada producto en el carrito
@@ -137,12 +137,12 @@ class CartController {
   async removeProductFromCart(req, res) {
     try {
       const { idCart, idProduct } = req.params;
-      let cartData = await cartsService.getCartById(idCart); // Obtener datos del carrito por ID
+      let cartData = await cartService.getCartById(idCart); // Obtener datos del carrito por ID
       cartData.productos = cartData.productos.filter(
         // Filtrar productos para eliminar el producto con el ID especificado
         (product) => product.id !== idProduct
       );
-      await cartsService.updateCart(idCart, cartData); // Actualizar el carrito con los nuevos datos
+      await cartService.updateCart(idCart, cartData); // Actualizar el carrito con los nuevos datos
       return res.status(200).json(cartData); // Devolver los datos actualizados del carrito
     } catch (error) {
       res.status(500).json(error.message);
